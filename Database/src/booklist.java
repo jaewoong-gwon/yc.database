@@ -15,6 +15,7 @@ public class booklist {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); // 클래스 이름의 JBDC 드라이버를 로딩,오라클 db 사용중.
 			System.out.println("드라이버 로드 성공");
 		} catch (ClassNotFoundException e) {
+			System.out.println("fuck off");
 			e.printStackTrace();
 		}
 
