@@ -1,23 +1,14 @@
 <%@page import="database.model.Book"%>
 <%@page import="java.util.List"%>
 <%@page import="database.repository.session.BookRepository"%>
-<%@ page import="java.sql.*" contentType="text/html;charset=utf-8"%>
+<%@page import="java.sql.*" contentType="text/html;charset=utf-8"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 BookRepository br = new BookRepository();
-List<Book> books = br.selectAllBook();
-request.setAttribute("bookId", books);
+//List<Book> books = br.selectAllBook();
+pageContext.setAttribute("books", br.selectAllBook());
 %>
-<%-- 
-<%
- Class.forName("oracle.jdbc.driver.OracleDriver");
- String url="jdbc:oracle:thin:@localhost:1521:xe"; 
-	
-	/* 오라클 XE 버전이 아닌 정식버전은 orcl을 입력한다. */
- Connection dbconn=DriverManager.getConnection(url, "c##madang", "madang");
- Statement stmt = dbconn.createStatement();
- ResultSet myResultSet=stmt.executeQuery("SELECT * FROM Book");
-%>
---%>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -43,47 +34,26 @@ request.setAttribute("bookId", books);
 				</p>
 			</td>
 		</tr>
-		<%--
- if(myResultSet!=null){
-  while(myResultSet.next()){
-     String W_BOOKID=myResultSet.getString("bookid");
-     String W_BOOKNAME=myResultSet.getString("bookname");
-     String W_PUBLISHER=myResultSet.getString("publisher");
-     String W_PRICE=myResultSet.getString("price");
- --%>
-		<%
-		for (Book book : books) {	
-		%>
-		<tr>
-			<td width="150" height="20">
-				<p>
-					<span style="font-size: 9pt;"> <a
-						href="bookview.jsp?bookid=<%=book.getBookId()%>"> <font
-							face="돋움체" color="black"> <%=book.getBookName()%></font></a></span>
-				</p>
-			</td>
-			<td width="150" height="20">
-				<p align="center">
-					<span style="font-size: 9pt;"> <font face="돋움체"><%=book.getPublisher()%></font></span>
-				</p>
-			</td>
+	<c:forEach var="b" items="${books}">
+	<tr>
+	    <td width="150" height="20">
+             <p align="center"><span style="font-size:9pt;">
+             <a href="bookview.jsp?bookId=${b.bookId}">
+             <font face="돋움체" color="black">${b.bookName}</font>
+             </a></span></p>
+         </td>
+	    <td width="150" height="20">
+            <p align="center"><span style="font-size:9pt;">
+            <font face="돋움체">${b.publisher}</font></span></p>
+        </td>
 
-			<td width="50" height="20">
-				<p align="center">
-					<span style="font-size: 9pt;"> <font face="돋움체"><%=book.getPrice()%></font></span>
-				</p>
-			</td>
-		</tr>
-		<%
-		}
-		%>
-		<%--
-    }
-   }
-   stmt.close();
-   dbconn.close();
- --%>
-	</table>
+        <td width="50" height="20">
+            <p align="center"><span style="font-size:9pt;">
+            <font face="돋움체">${b.price}</font></span></p>
+        </td>
+    </tr>
+    </c:forEach>
+</table>
 	<table cellpadding="0" cellspacing="0" width="400" height="23">
 	<tr>
 		<td>
@@ -96,8 +66,8 @@ request.setAttribute("bookId", books);
 		<tr>
 			<td>
 				<p align="right">
-					<b><a href="bookInsertForm.jsp"> <font size="3" face="돋움체" color="black">ADD</font></a></b>
-					 <b><a href="booklist.jsp"> <font size="3" face="돋움체" color="black">LIST</font></a></b>
+					<b><a href="bookInsertForm.jsp"><font size="3" face="돋움체" color="black">ADD</font></a></b>
+					 <b><a href="booklist.jsp"><font size="3" face="돋움체" color="black">LIST</font></a></b>
 				</p>
 			</td>
 		</tr>

@@ -38,7 +38,7 @@ public class Book {
 		this.price = price;
 	}
 
-	public Book(int bookId, String bookName, String publisher, int price) {
+	public Book(Integer bookId, String bookName, String publisher,Integer price) {
 		super();
 		this.bookId = bookId;
 		this.bookName = bookName;

@@ -5,20 +5,14 @@
 <%
 request.setCharacterEncoding("utf-8");
 BookRepository br = new BookRepository();
-Book book = new Book(Integer.valueOf((String)request.getParameter("bookid")),
-					 request.getParameter("bookname"),
-					 request.getParameter("publisher"),
-					 Integer.valueOf((String)request.getParameter("price")));
-if (br.insert(book)) { 
+int bookId = Integer.valueOf((String)session.getAttribute("bookId"));
+
+if(br.delete(bookId)) {
 %>
 <script>
-	alert("도서 등록에 성공하였습니다!");
+	alert("도서 삭제에 성공하였습니다!");
 </script>
 <%
-  }
+}
 response.sendRedirect(request.getContextPath()+"/booklist.jsp?");
 %>
-
-
-
-

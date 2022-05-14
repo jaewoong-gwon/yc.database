@@ -43,17 +43,38 @@ public class BookRepository {
 		}
 		return null;
 	}
-	public boolean update() {
+
+	public boolean update(Book book) {
+		String query = "UPDATE Book SET bookname = ?, publisher = ?, price = ? WHERE bookid = ?";
+		try (PreparedStatement pstmt = getConnection().prepareStatement(query)) {
+			pstmt.setString(1, book.getBookName());
+			pstmt.setString(2, book.getPublisher());
+			pstmt.setInt(3, book.getPrice());
+			pstmt.setInt(4, book.getBookId());
+
+			int res = pstmt.executeUpdate();
+
+			if (res > 0) {
+				System.out.println("도서를 성공적으로 수정하였습니다.");
+				return true;
+			} else {
+				System.out.println("도서를 수정하지 못했습니다.");
+				return false;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
-	public boolean insert(int bookId, String bookName, String publisher, int price) {
+	public boolean insert(Book book) {
 		String query = "INSERT INTO Book (bookid,bookname,publisher,price) VALUES (?,?,?,?)";
 		try (PreparedStatement pstmt = getConnection().prepareStatement(query)) {
-			pstmt.setInt(1, bookId);
-			pstmt.setString(2, bookName);
-			pstmt.setString(3, publisher);
-			pstmt.setInt(4, price);
+			pstmt.setInt(1, book.getBookId());
+			pstmt.setString(2, book.getBookName());
+			pstmt.setString(3, book.getPublisher());
+			pstmt.setInt(4, book.getPrice());
 			int res = pstmt.executeUpdate();
 
 			if (res > 0) {
@@ -70,7 +91,7 @@ public class BookRepository {
 	public List<Book> search(String pattern) {
 		String query = "SELECT * FROM Book WHERE bookname LIKE ? OR publisher LIKE ?";
 		try (PreparedStatement pstmt = getConnection().prepareStatement(query)) {
-			pstmt.setString(1,"%" + pattern + "%");
+			pstmt.setString(1, "%" + pattern + "%");
 			pstmt.setString(2, "%" + pattern + "%");
 
 			ResultSet myResultSet = pstmt.executeQuery();
@@ -89,5 +110,39 @@ public class BookRepository {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public boolean delete(Book book) {
+		String query = "DELETE FROM Book WHERE bookid = ?";
+		try (PreparedStatement pstmt = getConnection().prepareStatement(query)) {
+			pstmt.setInt(1, book.getBookId());
+			int res = pstmt.executeUpdate();
+
+			if (res > 0) {
+				System.out.println("도서를 정상적으로 삭제하였습니다");
+				return true;
+			} else
+				System.out.println("해당 번호의 도서가 없습니다!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean delete(int id) {
+		String query = "DELETE FROM Book WHERE bookid = ?";
+		try (PreparedStatement pstmt = getConnection().prepareStatement(query)) {
+			pstmt.setInt(1, id);
+			int res = pstmt.executeUpdate();
+
+			if (res > 0) {
+				System.out.println("도서를 정상적으로 삭제하였습니다");
+				return true;
+			} else
+				System.out.println("해당 번호의 도서가 없습니다!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

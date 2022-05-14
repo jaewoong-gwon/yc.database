@@ -38,7 +38,7 @@
 		%>
 		<tr>
 			<td width="150" height="20">
-				<p>
+				<p align="center">
 					<span style="font-size: 9pt;"> <a
 						href="bookview.jsp?bookid=<%=book.getBookId()%>"> <font
 							face="돋움체" color="black"> <%=book.getBookName()%></font></a></span>
