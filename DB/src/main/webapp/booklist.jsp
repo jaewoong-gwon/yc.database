@@ -2,12 +2,13 @@
 <%@page import="java.util.List"%>
 <%@page import="database.repository.session.BookRepository"%>
 <%@page import="java.sql.*" contentType="text/html;charset=utf-8"%>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 BookRepository br = new BookRepository();
 //List<Book> books = br.selectAllBook();
 pageContext.setAttribute("books", br.selectAllBook());
+List<Book> books = br.selectAllBook();
+request.setAttribute("bookId", books);
 %>
 <html>
 <head>
@@ -54,6 +55,33 @@ pageContext.setAttribute("books", br.selectAllBook());
     </tr>
     </c:forEach>
 </table>
+		<%
+		for (Book book : books) {	
+		%>
+		<tr>
+			<td width="150" height="20">
+				<p>
+					<span style="font-size: 9pt;"> <a
+						href="bookview.jsp?bookid=<%=book.getBookId()%>"> <font
+							face="돋움체" color="black"> <%=book.getBookName()%></font></a></span>
+				</p>
+			</td>
+			<td width="150" height="20">
+				<p align="center">
+					<span style="font-size: 9pt;"> <font face="돋움체"><%=book.getPublisher()%></font></span>
+				</p>
+			</td>
+
+			<td width="50" height="20">
+				<p align="center">
+					<span style="font-size: 9pt;"> <font face="돋움체"><%=book.getPrice()%></font></span>
+				</p>
+			</td>
+		</tr>
+		<%
+		}
+		%>
+	</table>
 	<table cellpadding="0" cellspacing="0" width="400" height="23">
 	<tr>
 		<td>
