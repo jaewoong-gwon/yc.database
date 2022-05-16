@@ -3,7 +3,7 @@
 <%@page import="database.repository.session.BookRepository"%>
 <%@ page import="java.sql.*" contentType="text/html;charset=utf-8"%>
 <%
-int bookId = 0;
+int bookId;
 String bookName;
 String publisher;
 int pirce;

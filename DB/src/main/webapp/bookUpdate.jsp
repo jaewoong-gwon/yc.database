@@ -5,12 +5,13 @@
 <%
 request.setCharacterEncoding("utf-8");
 BookRepository br = new BookRepository();
-String bookName = request.getParameter("bookName");
-String publisher = request.getParameter("publisher");
-int price = Integer.parseInt(request.getParameter("price"));
-
+Book book = new Book(Integer.valueOf((String)session.getAttribute("bookId")),
+		 			 request.getParameter("bookName"),
+					 request.getParameter("publisher"),
+					 Integer.valueOf(request.getParameter("price")));
+if(br.update(book)) {
+	out.println("<script>alert('수정 완료');</script>");
+}
+response.sendRedirect(request.getContextPath()+ "/booklist.jsp?");
 %>
-<script>
-	alert("도서 등록에 성공하였습니다!");
-	history.go(-1);
-</script>
+
